@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
-    internal class AuthDbContext : IdentityDbContext<User, Role, Guid>
+    internal class AuthDbContext : IdentityDbContext<CustomUser, CustomRole, Guid>
     {
 
     }

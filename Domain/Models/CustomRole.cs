@@ -2,7 +2,7 @@
 
 namespace Domain.Models
 {
-    public class Role : IdentityRole<Guid>
+    public class CustomRole : IdentityRole<Guid>
     {
     }
 }
