@@ -1,10 +1,10 @@
 ﻿using Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
-    internal class AuthDbContext : IdentityDbContext<CustomUser, CustomRole, Guid>
+    public class AuthDbContext(DbContextOptions options) : IdentityDbContext<CustomUser, CustomRole, Guid>(options)
     {
-
     }
 }
