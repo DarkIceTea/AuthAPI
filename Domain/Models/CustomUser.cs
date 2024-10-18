@@ -4,6 +4,7 @@ namespace Domain.Models
 {
     public class CustomUser : IdentityUser<Guid>
     {
-        public string RefreshToken { get; set; }
+        public Guid? RefreshTokenId { get; set; }
+        public RefreshToken? RefreshToken { get; set; }
     }
 }

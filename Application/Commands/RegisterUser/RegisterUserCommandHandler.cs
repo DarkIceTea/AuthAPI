@@ -1,12 +1,14 @@
-﻿using MediatR;
+﻿using Application.Abstractions;
+using Application.Results;
+using MediatR;
 
 namespace Application.Commands.RegisterUser
 {
-    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
+    public class RegisterUserCommandHandler(IUserService service) : IRequestHandler<RegisterUserCommand, Tokens>
     {
-        Task IRequestHandler<RegisterUserCommand>.Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<Tokens> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await service.RegisterUser(request.Email, request.UserName, request.Password);
         }
     }
 }

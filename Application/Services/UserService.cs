@@ -7,9 +7,11 @@ namespace Application.Services
 {
     public class UserService(UserManager<CustomUser> userManager) : IUserService
     {
-        Tokens IUserService.RegisterUser(string email, string password)
+        public async Task<Tokens> RegisterUser(string email, string userName, string password)
         {
-            throw new NotImplementedException();
+            CustomUser user = new CustomUser() { UserName = userName, Email = email };
+            var res = await userManager.CreateAsync(user, password);
+            return new Tokens();
         }
     }
 }
