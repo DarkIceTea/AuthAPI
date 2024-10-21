@@ -45,6 +45,7 @@ namespace API
 
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IAccessTokenService, AccessTokenService>();
+            builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
 
             var app = builder.Build();

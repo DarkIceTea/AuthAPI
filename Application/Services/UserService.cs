@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Application.Services
 {
-    public class UserService(UserManager<CustomUser> userManager, IAccessTokenService accessTokenService) : IUserService
+    public class UserService(UserManager<CustomUser> userManager, IAccessTokenService accessTokenService, IRefreshTokenService refreshTokenService) : IUserService
     {
         public async Task<Tokens> RegisterUser(string email, string userName, string password)
         {
@@ -13,11 +13,17 @@ namespace Application.Services
             if (a is not null)
                 throw new Exception("User with same email exist");
 
-            CustomUser user = new CustomUser() { UserName = userName, Email = email };
+            CustomUser user = new CustomUser() { Id = Guid.NewGuid(), UserName = userName, Email = email };
+            RefreshToken refreshToken = refreshTokenService.CreateRefreshToken(user);
+            user.RefreshToken = refreshToken;
+
             var res = await userManager.CreateAsync(user, password);
 
-            var tokens = new Tokens() { AccessToken = accessTokenService.CreateAccessToken(user) };
-            //TODO: Add Refresh token creation
+            var tokens = new Tokens()
+            {
+                AccessToken = accessTokenService.CreateAccessToken(user),
+                RefreshToken = refreshToken.Token
+            };
             return tokens;
         }
     }
