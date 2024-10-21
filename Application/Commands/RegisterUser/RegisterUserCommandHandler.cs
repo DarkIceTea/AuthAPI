@@ -8,7 +8,7 @@ namespace Application.Commands.RegisterUser
     {
         public async Task<Tokens> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
-            return await service.RegisterUser(request.Email, request.UserName, request.Password);
+            return await service.RegisterUserAsync(request.Email, request.UserName, request.Password, cancellationToken);
         }
     }
 }

@@ -57,6 +57,7 @@ namespace API
             app.UseAuthorization();
 
             app.MapPost("/register", async ([FromBody] RegisterUserCommand command, CancellationToken cancellationToken) => await _sender.Send(command, cancellationToken));
+            //app.MapPost("/login", );
             app.MapGet("/", () => "Hello World!");
 
             app.Run();

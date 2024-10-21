@@ -4,6 +4,7 @@ namespace Application.Abstractions
 {
     public interface IUserService
     {
-        Task<Tokens> RegisterUser(string email, string UserName, string password);
+        Task<Tokens> RegisterUserAsync(string email, string UserName, string password, CancellationToken cancelationToken);
+        Task<Tokens> LoginUserAsync(string email, string password, CancellationToken cancellationToken);
     }
 }
