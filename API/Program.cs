@@ -4,9 +4,12 @@ using Application.Services;
 using Domain.Models;
 using Infrastructure.Data;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace API
 {
@@ -24,8 +27,24 @@ namespace API
                 .AddEntityFrameworkStores<AuthDbContext>()
                 .AddDefaultTokenProviders();
 
-            //builder.Services.AddTransient<UserManager<CustomUser>, UserManager<CustomUser>>();
+            builder.Services.AddAuthorization();
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = "AuthApiServer",
+                        ValidateAudience = true,
+                        ValidAudience = "InnoclinicApi",
+                        ValidateLifetime = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("securitykeysecuritykeysecuritykey")),
+                        ValidateIssuerSigningKey = true,
+                    };
+                });
+
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IAccessTokenService, AccessTokenService>();
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
 
             var app = builder.Build();
@@ -33,8 +52,8 @@ namespace API
             var provider = builder.Services.BuildServiceProvider();
             ISender _sender = provider.GetRequiredService<ISender>();
 
-            //app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapPost("/register", async ([FromBody] RegisterUserCommand command, CancellationToken cancellationToken) => await _sender.Send(command, cancellationToken));
             app.MapGet("/", () => "Hello World!");

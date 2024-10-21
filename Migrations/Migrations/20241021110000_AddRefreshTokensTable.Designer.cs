@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Migrations.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20241018104039_RefreshTokenAdd")]
-    partial class RefreshTokenAdd
+    [Migration("20241021110000_AddRefreshTokensTable")]
+    partial class AddRefreshTokensTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
