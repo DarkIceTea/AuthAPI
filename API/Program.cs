@@ -1,16 +1,6 @@
-using Application.Abstractions;
-using Application.Commands.LoginUser;
-using Application.Commands.RegisterUser;
-using Application.Services;
-using Domain.Models;
-using Infrastructure.Data;
+using API.Endpoints;
+using API.Extensions;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 namespace API
 {
@@ -19,54 +9,13 @@ namespace API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-            builder.Services.AddDbContext<AuthDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQLAuthApi"),
-                x => x.MigrationsAssembly("Migrations")));
-
-            builder.Services.AddIdentity<CustomUser, CustomRole>()
-                .AddEntityFrameworkStores<AuthDbContext>()
-                .AddDefaultTokenProviders();
-
-            builder.Services.AddAuthorization();
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = "AuthApiServer",
-                        ValidateAudience = true,
-                        ValidAudience = "InnoclinicApi",
-                        ValidateLifetime = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("securitykeysecuritykeysecuritykey")),
-                        ValidateIssuerSigningKey = true,
-                    };
-                });
-
-            builder.Services.AddProblemDetails();
-
-
-
-            builder.Services.AddScoped<IUserService, UserService>();
-            builder.Services.AddScoped<IAccessTokenService, AccessTokenService>();
-            builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
-            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
-
+            builder.ConfigureApplicationServices();
             var app = builder.Build();
 
             var provider = builder.Services.BuildServiceProvider();
-            ISender _sender = provider.GetRequiredService<ISender>();
+            AuthEndpoints.SetSender(provider.GetRequiredService<ISender>());
 
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            //app.UseStatusCodePages();
-            app.UseExceptionHandler();
-
-            app.MapPost("/register", async ([FromBody] RegisterUserCommand command, CancellationToken cancellationToken) => await _sender.Send(command, cancellationToken));
-            app.MapPost("/login", async ([FromBody] LoginUserCommand command, CancellationToken cancellationToken) => await _sender.Send(command, cancellationToken));
-            app.MapGet("/", () => "Hello World!");
+            app.ConfigureMiddlewares();
 
             app.Run();
         }

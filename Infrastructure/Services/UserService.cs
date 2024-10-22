@@ -10,12 +10,11 @@ namespace Application.Services
     {
         public async Task<Tokens> RegisterUserAsync(string email, string userName, string password, CancellationToken cancellationToken)
         {
-            var a = await userManager.FindByEmailAsync(email);
-            if (a is not null)
+            if (await userManager.FindByEmailAsync(email) is not null)
                 throw new Exception(ExceptionMessages.UserExist);
 
-            CustomUser user = new CustomUser() { Id = Guid.NewGuid(), UserName = userName, Email = email };
-            RefreshToken refreshToken = refreshTokenService.CreateRefreshToken(user);
+            var user = new CustomUser() { Id = Guid.NewGuid(), UserName = userName, Email = email };
+            var refreshToken = refreshTokenService.CreateRefreshToken(user);
             user.RefreshToken = refreshToken;
 
             var res = await userManager.CreateAsync(user, password);
