@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.Results;
 using Domain.Models;
+using Infrastructure.Resources;
 using Microsoft.AspNetCore.Identity;
 
 namespace Application.Services
@@ -11,7 +12,7 @@ namespace Application.Services
         {
             var a = await userManager.FindByEmailAsync(email);
             if (a is not null)
-                throw new Exception("User with same email exist");
+                throw new Exception(ExceptionMessages.UserExist);
 
             CustomUser user = new CustomUser() { Id = Guid.NewGuid(), UserName = userName, Email = email };
             RefreshToken refreshToken = refreshTokenService.CreateRefreshToken(user);
@@ -31,10 +32,10 @@ namespace Application.Services
         {
             var user = await userManager.FindByEmailAsync(email);
             if (user is null)
-                throw new Exception("Wrong email or password");
+                throw new Exception(ExceptionMessages.WrongUser);
 
             if (!await userManager.CheckPasswordAsync(user, password))
-                throw new Exception("Wrong email or password");
+                throw new Exception(ExceptionMessages.WrongUser);
 
             refreshTokenService.DeleteRefreshToken(refreshTokenService.GetRefreshToken(user));
             var refreshToken = refreshTokenService.CreateRefreshToken(user);

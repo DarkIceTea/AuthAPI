@@ -44,6 +44,10 @@ namespace API
                     };
                 });
 
+            builder.Services.AddProblemDetails();
+
+
+
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IAccessTokenService, AccessTokenService>();
             builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
@@ -56,6 +60,9 @@ namespace API
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            //app.UseStatusCodePages();
+            app.UseExceptionHandler();
 
             app.MapPost("/register", async ([FromBody] RegisterUserCommand command, CancellationToken cancellationToken) => await _sender.Send(command, cancellationToken));
             app.MapPost("/login", async ([FromBody] LoginUserCommand command, CancellationToken cancellationToken) => await _sender.Send(command, cancellationToken));
