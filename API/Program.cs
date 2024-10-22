@@ -1,4 +1,5 @@
 using Application.Abstractions;
+using Application.Commands.LoginUser;
 using Application.Commands.RegisterUser;
 using Application.Services;
 using Domain.Models;
@@ -57,7 +58,7 @@ namespace API
             app.UseAuthorization();
 
             app.MapPost("/register", async ([FromBody] RegisterUserCommand command, CancellationToken cancellationToken) => await _sender.Send(command, cancellationToken));
-            //app.MapPost("/login", );
+            app.MapPost("/login", async ([FromBody] LoginUserCommand command, CancellationToken cancellationToken) => await _sender.Send(command, cancellationToken));
             app.MapGet("/", () => "Hello World!");
 
             app.Run();

@@ -33,11 +33,11 @@ namespace Application.Services
             if (user is null)
                 throw new Exception("Wrong email or password");
 
-            if (await userManager.CheckPasswordAsync(user, password))
+            if (!await userManager.CheckPasswordAsync(user, password))
                 throw new Exception("Wrong email or password");
 
+            refreshTokenService.DeleteRefreshToken(refreshTokenService.GetRefreshToken(user));
             var refreshToken = refreshTokenService.CreateRefreshToken(user);
-            //userManager.
 
             var tokens = new Tokens()
             {

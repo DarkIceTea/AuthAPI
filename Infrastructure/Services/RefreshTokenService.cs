@@ -1,10 +1,11 @@
 ﻿using Application.Abstractions;
 using Domain.Models;
+using Infrastructure.Data;
 using System.Security.Cryptography;
 
 namespace Application.Services
 {
-    public class RefreshTokenService : IRefreshTokenService
+    public class RefreshTokenService(AuthDbContext authDbContext) : IRefreshTokenService
     {
         public RefreshToken CreateRefreshToken(CustomUser customUser)
         {
@@ -18,6 +19,17 @@ namespace Application.Services
                 Token = GenerateRefreshToken()
             };
             return refreshToken;
+        }
+
+        public void DeleteRefreshToken(RefreshToken refreshToken)
+        {
+            authDbContext.RefreshTokens.Remove(refreshToken);
+            authDbContext.SaveChanges();
+        }
+
+        public RefreshToken GetRefreshToken(CustomUser customUser)
+        {
+            return authDbContext.RefreshTokens.Find(customUser.RefreshTokenId);
         }
 
         private string GenerateRefreshToken()

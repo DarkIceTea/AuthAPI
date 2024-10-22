@@ -6,7 +6,7 @@ namespace Infrastructure.Data
 {
     public class AuthDbContext(DbContextOptions options) : IdentityDbContext<CustomUser, CustomRole, Guid>(options)
     {
-        DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
