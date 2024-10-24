@@ -61,7 +61,7 @@ namespace API.Extensions
             app.MapPost("/register", AuthEndpoints.Registration);
             app.MapPost("/login", AuthEndpoints.Login);
             app.MapPost("/sign-out", AuthEndpoints.SignOut);
-            //app.MapPost("/refresh", AuthEndpoints.Refresh);
+            app.MapPost("/refresh", AuthEndpoints.Refresh);
             //app.MapGet("/", () => "Hello World!");
 
             return app;

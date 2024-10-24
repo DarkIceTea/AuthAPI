@@ -126,4 +126,7 @@
   <data name="InvalidRefresh" xml:space="preserve">
     <value>Invalid Refresh Token</value>
   </data>
+  <data name="BadUserRole" xml:space="preserve">
+    <value>Unavailable User Role</value>
+  </data>
 </root>

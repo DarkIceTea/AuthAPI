@@ -4,6 +4,6 @@ namespace Application.Abstractions
 {
     public interface IAccessTokenService
     {
-        public string CreateAccessToken(CustomUser user);
+        public string CreateAccessToken(CustomUser user, CancellationToken cancellationToken);
     }
 }

@@ -8,21 +8,24 @@ namespace Application.Services
 {
     public class UserService(UserManager<CustomUser> userManager, IAccessTokenService accessTokenService, IRefreshTokenService refreshTokenService) : IUserService
     {
-        public async Task<Tokens> RegisterUserAsync(string email, string userName, string password, CancellationToken cancellationToken)
+        public async Task<Tokens> RegisterUserAsync(string email, string userName, string password, string role, CancellationToken cancellationToken)
         {
             if (await userManager.FindByEmailAsync(email) is not null)
                 throw new Exception(ExceptionMessages.UserExist);
 
+            if (role != "doctor" && role != "patient")
+                throw new Exception(ExceptionMessages.BadUserRole);
+
             var user = new CustomUser() { Id = Guid.NewGuid(), UserName = userName, Email = email };
             var res = await userManager.CreateAsync(user, password);
+            userManager.AddToRoleAsync(user, role);
 
             var refreshToken = await refreshTokenService.CreateRefreshTokenAsync(user, cancellationToken);
             user.RefreshToken = refreshToken;
-
-
+            await refreshTokenService.SaveChangesAsync(cancellationToken);
             var tokens = new Tokens()
             {
-                AccessToken = accessTokenService.CreateAccessToken(user),
+                AccessToken = accessTokenService.CreateAccessToken(user, cancellationToken),
                 RefreshToken = refreshToken.Token
             };
             return tokens;
@@ -49,10 +52,19 @@ namespace Application.Services
 
             var tokens = new Tokens()
             {
-                AccessToken = accessTokenService.CreateAccessToken(user),
+                AccessToken = accessTokenService.CreateAccessToken(user, cancellationToken),
                 RefreshToken = refreshToken.Token
             };
             return tokens;
+        }
+        public async Task<CustomUser> GetUserByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            return await userManager.FindByIdAsync(id.ToString());
+        }
+
+        public async Task<IList<string>> GetUserRoles(CustomUser user, CancellationToken cancellationToken)
+        {
+            return await userManager.GetRolesAsync(user);
         }
     }
 }

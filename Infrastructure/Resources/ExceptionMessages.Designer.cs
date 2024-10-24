@@ -61,6 +61,15 @@ namespace Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unavailable User Role.
+        /// </summary>
+        internal static string BadUserRole {
+            get {
+                return ResourceManager.GetString("BadUserRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid Refresh Token.
         /// </summary>
         internal static string InvalidRefresh {

@@ -1,4 +1,5 @@
 ﻿using Application.Commands.LoginUser;
+using Application.Commands.RefreshTokens;
 using Application.Commands.RegisterUser;
 using Application.Commands.SignOutUser;
 using Application.Results;
@@ -27,6 +28,10 @@ namespace API.Endpoints
         public static async Task SignOut([FromBody] SignOutUserCommand command, CancellationToken cancellationToken)
         {
             await _sender.Send(command, cancellationToken);
+        }
+        public static async Task<Tokens> Refresh([FromBody] RefreshTokensCommand command, CancellationToken cancellationToken)
+        {
+            return await _sender.Send(command, cancellationToken);
         }
     }
 }
