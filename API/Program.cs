@@ -12,8 +12,7 @@ namespace API
             builder.ConfigureApplicationServices();
             var app = builder.Build();
 
-            var provider = builder.Services.BuildServiceProvider();
-            AuthEndpoints.SetSender(provider.GetRequiredService<ISender>());
+            AuthEndpoints.SetSender(builder.Services.BuildServiceProvider().GetRequiredService<ISender>());
 
             app.ConfigureMiddlewares();
 

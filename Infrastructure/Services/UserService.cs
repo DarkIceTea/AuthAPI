@@ -14,10 +14,11 @@ namespace Application.Services
                 throw new Exception(ExceptionMessages.UserExist);
 
             var user = new CustomUser() { Id = Guid.NewGuid(), UserName = userName, Email = email };
-            var refreshToken = refreshTokenService.CreateRefreshToken(user);
+            var res = await userManager.CreateAsync(user, password);
+
+            var refreshToken = await refreshTokenService.CreateRefreshTokenAsync(user, cancellationToken);
             user.RefreshToken = refreshToken;
 
-            var res = await userManager.CreateAsync(user, password);
 
             var tokens = new Tokens()
             {
@@ -36,8 +37,15 @@ namespace Application.Services
             if (!await userManager.CheckPasswordAsync(user, password))
                 throw new Exception(ExceptionMessages.WrongUser);
 
-            refreshTokenService.DeleteRefreshToken(refreshTokenService.GetRefreshToken(user));
-            var refreshToken = refreshTokenService.CreateRefreshToken(user);
+            if (user.RefreshTokenId is not null)
+            {
+                var a = await refreshTokenService.GetRefreshTokenByIdAsync((Guid)user.RefreshTokenId, cancellationToken);
+                refreshTokenService.DeleteRefreshTokenAsync(a, cancellationToken);
+            }
+
+            var refreshToken = await refreshTokenService.CreateRefreshTokenAsync(user, cancellationToken);
+
+            refreshTokenService.SaveChangesAsync(cancellationToken);
 
             var tokens = new Tokens()
             {

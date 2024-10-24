@@ -3,6 +3,7 @@ using Application.Abstractions;
 using Application.Services;
 using Domain.Models;
 using Infrastructure.Data;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -41,8 +42,7 @@ namespace API.Extensions
 
             builder.Services.AddProblemDetails();
 
-
-
+            builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IAccessTokenService, AccessTokenService>();
             builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
@@ -56,11 +56,13 @@ namespace API.Extensions
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseExceptionHandler();
+            //app.UseExceptionHandler();
 
             app.MapPost("/register", AuthEndpoints.Registration);
             app.MapPost("/login", AuthEndpoints.Login);
-            app.MapGet("/", () => "Hello World!");
+            app.MapPost("/sign-out", AuthEndpoints.SignOut);
+            //app.MapPost("/refresh", AuthEndpoints.Refresh);
+            //app.MapGet("/", () => "Hello World!");
 
             return app;
         }

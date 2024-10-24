@@ -61,6 +61,15 @@ namespace Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid Refresh Token.
+        /// </summary>
+        internal static string InvalidRefresh {
+            get {
+                return ResourceManager.GetString("InvalidRefresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User with same email already exist.
         /// </summary>
         internal static string UserExist {

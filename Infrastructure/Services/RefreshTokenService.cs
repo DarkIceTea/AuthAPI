@@ -1,13 +1,12 @@
 ﻿using Application.Abstractions;
 using Domain.Models;
-using Infrastructure.Data;
 using System.Security.Cryptography;
 
 namespace Application.Services
 {
-    public class RefreshTokenService(AuthDbContext authDbContext) : IRefreshTokenService
+    public class RefreshTokenService(IRefreshTokenRepository refreshTokenRepository) : IRefreshTokenService
     {
-        public RefreshToken CreateRefreshToken(CustomUser customUser)
+        public async Task<RefreshToken> CreateRefreshTokenAsync(CustomUser customUser, CancellationToken cancellationToken)
         {
             var refreshToken = new RefreshToken()
             {
@@ -18,18 +17,33 @@ namespace Application.Services
                 UserId = customUser.Id,
                 Token = GenerateRefreshToken()
             };
+            await refreshTokenRepository.CreateTokenAsync(refreshToken, cancellationToken);
             return refreshToken;
         }
 
-        public void DeleteRefreshToken(RefreshToken refreshToken)
+        public void DeleteRefreshTokenAsync(RefreshToken refreshToken, CancellationToken cancellationToken)
         {
-            authDbContext.RefreshTokens.Remove(refreshToken);
-            authDbContext.SaveChanges();
+            refreshTokenRepository.DeleteTokenAsync(refreshToken, cancellationToken);
         }
 
-        public RefreshToken GetRefreshToken(CustomUser customUser)
+        public async Task<RefreshToken> GetRefreshTokenByIdAsync(Guid guid, CancellationToken cancellationToken)
         {
-            return authDbContext.RefreshTokens.Find(customUser.RefreshTokenId);
+            return await refreshTokenRepository.GetRefreshTokenByIdAsync(guid, cancellationToken);
+        }
+
+        public async Task<RefreshToken> GetRefreshTokenByUserIdAsync(Guid guid, CancellationToken cancellationToken)
+        {
+            return await refreshTokenRepository.GetRefreshTokenByUserIdAsync(guid, cancellationToken);
+        }
+
+        public async Task<RefreshToken> GetRefreshTokenByValueIdAsync(string refreshTokenValue, CancellationToken cancellationToken)
+        {
+            return await refreshTokenRepository.GetRefreshTokenByValueAsync(refreshTokenValue, cancellationToken);
+        }
+
+        public async Task SaveChangesAsync(CancellationToken cancellationToken)
+        {
+            await refreshTokenRepository.SaveChangesAsync(cancellationToken);
         }
 
         private string GenerateRefreshToken()

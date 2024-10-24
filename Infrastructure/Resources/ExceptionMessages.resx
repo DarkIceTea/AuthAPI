@@ -123,4 +123,7 @@
   <data name="UserExist" xml:space="preserve">
     <value>User with same email already exist</value>
   </data>
+  <data name="InvalidRefresh" xml:space="preserve">
+    <value>Invalid Refresh Token</value>
+  </data>
 </root>

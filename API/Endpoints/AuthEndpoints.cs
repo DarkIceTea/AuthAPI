@@ -1,5 +1,6 @@
 ﻿using Application.Commands.LoginUser;
 using Application.Commands.RegisterUser;
+using Application.Commands.SignOutUser;
 using Application.Results;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -23,5 +24,9 @@ namespace API.Endpoints
             return await _sender.Send(command, cancellationToken);
         }
 
+        public static async Task SignOut([FromBody] SignOutUserCommand command, CancellationToken cancellationToken)
+        {
+            await _sender.Send(command, cancellationToken);
+        }
     }
 }

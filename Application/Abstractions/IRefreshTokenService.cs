@@ -4,8 +4,11 @@ namespace Application.Abstractions
 {
     public interface IRefreshTokenService
     {
-        public RefreshToken CreateRefreshToken(CustomUser customUser);
-        public RefreshToken GetRefreshToken(CustomUser customUser);
-        public void DeleteRefreshToken(RefreshToken refreshToken);
+        public Task<RefreshToken> CreateRefreshTokenAsync(CustomUser customUser, CancellationToken cancellationToken);
+        public Task<RefreshToken> GetRefreshTokenByIdAsync(Guid guid, CancellationToken cancellationToken);
+        public Task<RefreshToken> GetRefreshTokenByUserIdAsync(Guid guid, CancellationToken cancellationToken);
+        public Task<RefreshToken> GetRefreshTokenByValueIdAsync(string refreshTokenValue, CancellationToken cancellationToken);
+        public void DeleteRefreshTokenAsync(RefreshToken refreshToken, CancellationToken cancellationToken);
+        public Task SaveChangesAsync(CancellationToken cancellationToken);
     }
 }
