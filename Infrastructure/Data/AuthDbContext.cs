@@ -16,6 +16,9 @@ namespace Infrastructure.Data
                 .HasOne(x => x.RefreshToken)
                 .WithOne(r => r.User)
                 .HasForeignKey<CustomUser>(u => u.RefreshTokenId);
+
+            modelBuilder.Entity<IdentityRole<Guid>>().HasData(new IdentityRole<Guid>() { Id = Guid.NewGuid(), Name = "Doctor", NormalizedName = "DOCTOR" },
+                                                            new IdentityRole<Guid>() { Id = Guid.NewGuid(), Name = "Patient", NormalizedName = "PATIENT" });
         }
     }
 }

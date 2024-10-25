@@ -50,7 +50,7 @@ namespace Application.Services
 
             var refreshToken = await refreshTokenService.CreateRefreshTokenAsync(user, cancellationToken);
 
-            refreshTokenService.SaveChangesAsync(cancellationToken);
+            await refreshTokenService.SaveChangesAsync(cancellationToken);
 
             var tokens = new Tokens()
             {
