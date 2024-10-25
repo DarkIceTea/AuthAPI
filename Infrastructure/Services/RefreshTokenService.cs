@@ -21,7 +21,7 @@ namespace Application.Services
             return refreshToken;
         }
 
-        public void DeleteRefreshTokenAsync(RefreshToken refreshToken, CancellationToken cancellationToken)
+        public async Task DeleteRefreshTokenAsync(RefreshToken refreshToken, CancellationToken cancellationToken)
         {
             refreshTokenRepository.DeleteTokenAsync(refreshToken, cancellationToken);
         }

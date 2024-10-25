@@ -20,7 +20,7 @@ namespace API.Extensions
                 options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQLAuthApi"),
                 x => x.MigrationsAssembly("Migrations")));
 
-            builder.Services.AddIdentity<CustomUser, IdentityRole>()
+            builder.Services.AddIdentity<CustomUser, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<AuthDbContext>()
                 .AddDefaultTokenProviders();
 

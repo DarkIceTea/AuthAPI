@@ -8,7 +8,7 @@ namespace Application.Abstractions
         public Task<RefreshToken> GetRefreshTokenByIdAsync(Guid guid, CancellationToken cancellationToken);
         public Task<RefreshToken> GetRefreshTokenByUserIdAsync(Guid guid, CancellationToken cancellationToken);
         public Task<RefreshToken> GetRefreshTokenByValueIdAsync(string refreshTokenValue, CancellationToken cancellationToken);
-        public void DeleteRefreshTokenAsync(RefreshToken refreshToken, CancellationToken cancellationToken);
+        public Task DeleteRefreshTokenAsync(RefreshToken refreshToken, CancellationToken cancellationToken);
         public Task SaveChangesAsync(CancellationToken cancellationToken);
     }
 }
