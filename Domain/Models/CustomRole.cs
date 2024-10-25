@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿//using Microsoft.AspNetCore.Identity;
 
-namespace Domain.Models
-{
-    public class CustomRole : IdentityRole<Guid>
-    {
-    }
-}
+//namespace Domain.Models
+//{
+//    public class CustomRole : IdentityRole<Guid>
+//    {
+//    }
+//}

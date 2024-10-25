@@ -1,10 +1,11 @@
 ﻿using Domain.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
-    public class AuthDbContext(DbContextOptions options) : IdentityDbContext<CustomUser, CustomRole, Guid>(options)
+    public class AuthDbContext(DbContextOptions options) : IdentityDbContext<CustomUser, IdentityRole<Guid>, Guid>(options)
     {
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

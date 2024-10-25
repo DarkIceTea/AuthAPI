@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Application.Services
 {
-    public class UserService(UserManager<CustomUser> userManager, IAccessTokenService accessTokenService, IRefreshTokenService refreshTokenService) : IUserService
+    public class UserService(RoleManager<IdentityRole> roleManager, UserManager<CustomUser> userManager, IAccessTokenService accessTokenService, IRefreshTokenService refreshTokenService) : IUserService
     {
         public async Task<Tokens> RegisterUserAsync(string email, string userName, string password, string role, CancellationToken cancellationToken)
         {
+            roleManager.CreateAsync(new IdentityRole("doctor"));
+            roleManager.CreateAsync(new IdentityRole("patient"));
             if (await userManager.FindByEmailAsync(email) is not null)
                 throw new Exception(ExceptionMessages.UserExist);
 
@@ -18,7 +20,7 @@ namespace Application.Services
 
             var user = new CustomUser() { Id = Guid.NewGuid(), UserName = userName, Email = email };
             var res = await userManager.CreateAsync(user, password);
-            userManager.AddToRoleAsync(user, role);
+            await userManager.AddToRoleAsync(user, role);
 
             var refreshToken = await refreshTokenService.CreateRefreshTokenAsync(user, cancellationToken);
             user.RefreshToken = refreshToken;
