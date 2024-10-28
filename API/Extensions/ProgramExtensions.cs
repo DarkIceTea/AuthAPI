@@ -1,16 +1,9 @@
-﻿using API.Endpoints;
-using Application.Abstractions;
-using Application.Services;
+﻿using API.Configuration;
+using API.Endpoints;
 using Application.Validators;
-using Domain.Models;
 using FluentValidation.AspNetCore;
 using Infrastructure.Data;
-using Infrastructure.Repositories;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 namespace API.Extensions
 {
@@ -22,33 +15,9 @@ namespace API.Extensions
                 options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQLAuthApi"),
                 x => x.MigrationsAssembly("Migrations")));
 
-            builder.Services.AddIdentity<CustomUser, IdentityRole<Guid>>()
-                .AddEntityFrameworkStores<AuthDbContext>()
-                .AddDefaultTokenProviders();
-
-            builder.Services.AddAuthorization();
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = "AuthApiServer",
-                        ValidateAudience = true,
-                        ValidAudience = "InnoclinicApi",
-                        ValidateLifetime = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("securitykeysecuritykeysecuritykey")),
-                        ValidateIssuerSigningKey = true,
-                    };
-                });
-
+            AuthConfiguration.Configure(builder);
+            ServicesConfiguration.Configure(builder);
             builder.Services.AddProblemDetails();
-
-            builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-            builder.Services.AddScoped<IUserService, UserService>();
-            builder.Services.AddScoped<IAccessTokenService, AccessTokenService>();
-            builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
-            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
 
             //builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 
