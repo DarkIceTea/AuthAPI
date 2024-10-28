@@ -3,6 +3,7 @@ using Application.Commands.RefreshTokens;
 using Application.Commands.RegisterUser;
 using Application.Commands.SignOutUser;
 using Application.Results;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,8 +16,12 @@ namespace API.Endpoints
         {
             _sender = sender;
         }
-        public static async Task<Tokens> Registration([FromBody] RegisterUserCommand command, CancellationToken cancellationToken)
+        public static async Task<Tokens> Registration([FromBody] RegisterUserCommand command, IValidator<RegisterUserCommand> validator, CancellationToken cancellationToken)
         {
+            var validationResult = await validator.ValidateAsync(command, cancellationToken);
+            if (!validationResult.IsValid)
+                throw new Exception("User Invalid");
+
             return await _sender.Send(command, cancellationToken);
         }
 

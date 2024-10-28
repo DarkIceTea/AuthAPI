@@ -1,7 +1,9 @@
 ﻿using API.Endpoints;
 using Application.Abstractions;
 using Application.Services;
+using Application.Validators;
 using Domain.Models;
+using FluentValidation.AspNetCore;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -47,6 +49,13 @@ namespace API.Extensions
             builder.Services.AddScoped<IAccessTokenService, AccessTokenService>();
             builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
+
+            //builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+
+            builder.Services.AddFluentValidation(config =>
+            {
+                config.RegisterValidatorsFromAssemblyContaining<RegisterUserCommandValidator>();
+            });
 
             return builder;
         }
