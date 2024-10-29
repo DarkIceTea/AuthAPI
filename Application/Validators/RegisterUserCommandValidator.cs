@@ -21,7 +21,7 @@ namespace Application.Validators
 
             RuleFor(x => x.UserRole)
                 .NotEmpty().WithMessage("User Role is Required")
-                .Must(role => role == "Patient" || role == "Doctor");
+                .Must(role => role == "patient" || role == "doctor");
         }
     }
 }

@@ -9,6 +9,7 @@ namespace API.Extensions
 {
     public static class ProgramExtensions
     {
+        [Obsolete]
         public static WebApplicationBuilder ConfigureApplicationServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddDbContext<AuthDbContext>(options =>
@@ -31,8 +32,8 @@ namespace API.Extensions
 
         public static WebApplication ConfigureMiddlewares(this WebApplication app)
         {
-            app.UseAuthentication();
-            app.UseAuthorization();
+            //app.UseAuthentication();
+            //app.UseAuthorization();
 
             //app.UseExceptionHandler();
 
@@ -40,7 +41,6 @@ namespace API.Extensions
             app.MapPost("/login", AuthEndpoints.Login);
             app.MapPost("/sign-out", AuthEndpoints.SignOut);
             app.MapPost("/refresh", AuthEndpoints.Refresh);
-            //app.MapGet("/", () => "Hello World!");
 
             return app;
         }
