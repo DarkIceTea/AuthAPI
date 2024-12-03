@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{6A35A4F2-E883-4EA6-B74C-0C1A54E86469}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0841BEF9-39DE-4CAD-9FB9-C7EF9C213703} = {0841BEF9-39DE-4CAD-9FB9-C7EF9C213703}
+		{0E163CB2-24C6-473C-8D31-B579D8F40ACD} = {0E163CB2-24C6-473C-8D31-B579D8F40ACD}
+		{20A9F323-AC7E-4D8E-95E1-28F6B30922F0} = {20A9F323-AC7E-4D8E-95E1-28F6B30922F0}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{39DB7EDB-7CFD-4542-AB46-E185A146004D}"
 EndProject
@@ -13,6 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{0E163CB2-24C6-473C-8D31-B579D8F40ACD}"
 	ProjectSection(ProjectDependencies) = postProject
+		{20A9F323-AC7E-4D8E-95E1-28F6B30922F0} = {20A9F323-AC7E-4D8E-95E1-28F6B30922F0}
 		{B8F963F1-88EC-4C8F-9FDD-F85A7836394D} = {B8F963F1-88EC-4C8F-9FDD-F85A7836394D}
 	EndProjectSection
 EndProject
@@ -21,7 +27,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Migrations", "Migrations\Mi
 		{0E163CB2-24C6-473C-8D31-B579D8F40ACD} = {0E163CB2-24C6-473C-8D31-B579D8F40ACD}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{20A9F323-AC7E-4D8E-95E1-28F6B30922F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{20A9F323-AC7E-4D8E-95E1-28F6B30922F0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B8F963F1-88EC-4C8F-9FDD-F85A7836394D} = {B8F963F1-88EC-4C8F-9FDD-F85A7836394D}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{73F3BA2B-8E62-4818-8E73-2FD72D5A8E7B}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{17D6B7C2-89EE-4A4C-9920-9C5FEA6FFBCE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +66,10 @@ Global
 		{20A9F323-AC7E-4D8E-95E1-28F6B30922F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20A9F323-AC7E-4D8E-95E1-28F6B30922F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20A9F323-AC7E-4D8E-95E1-28F6B30922F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17D6B7C2-89EE-4A4C-9920-9C5FEA6FFBCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17D6B7C2-89EE-4A4C-9920-9C5FEA6FFBCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17D6B7C2-89EE-4A4C-9920-9C5FEA6FFBCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17D6B7C2-89EE-4A4C-9920-9C5FEA6FFBCE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
