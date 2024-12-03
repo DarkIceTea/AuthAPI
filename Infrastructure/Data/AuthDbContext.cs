@@ -1,12 +1,13 @@
 ﻿using Domain.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
-    public class AuthDbContext(DbContextOptions options) : IdentityDbContext<CustomUser, CustomRole, Guid>(options)
+    public class AuthDbContext(DbContextOptions options) : IdentityDbContext<CustomUser, IdentityRole<Guid>, Guid>(options)
     {
-        DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -15,6 +16,9 @@ namespace Infrastructure.Data
                 .HasOne(x => x.RefreshToken)
                 .WithOne(r => r.User)
                 .HasForeignKey<CustomUser>(u => u.RefreshTokenId);
+
+            modelBuilder.Entity<IdentityRole<Guid>>().HasData(new IdentityRole<Guid>() { Id = Guid.NewGuid(), Name = "Doctor", NormalizedName = "DOCTOR" },
+                                                            new IdentityRole<Guid>() { Id = Guid.NewGuid(), Name = "Patient", NormalizedName = "PATIENT" });
         }
     }
 }
