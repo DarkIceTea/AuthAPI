@@ -24,7 +24,7 @@ namespace InfrastructureTests.Services
             var token = await refTokServ.CreateRefreshTokenAsync(user, CancellationToken.None);
 
             //Assert
-            //Assert.NotNull(token);
+            Assert.NotNull(token);
             Assert.IsType<RefreshToken>(token);
             repoMock.Verify(r => r.CreateTokenAsync(token, CancellationToken.None), Times.Once);
         }
